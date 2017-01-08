@@ -24,14 +24,23 @@ def convert_markdown_to_html(markdown_path, article_title, template):
     html = markdown.markdown(markdown_text)
     result_html = jinja2.Template(template).render(content=html,
                                                    title=article_title)
+    return result_html
+
+
+def form_path_to_save_html(markdown_path):
     path_to_save = os.path.join('./html', os.path.dirname(markdown_path))
     test_path_and_make_dir(path_to_save)
     extension = '.html'
     new_filename = os.path.splitext(os.path.basename(markdown_path))[0] + extension
     final_path = os.path.join(path_to_save, new_filename)
-    with codecs.open(final_path, "w", encoding="utf-8",
+    return final_path
+
+
+def save_html_file(html_text, path_to_save):
+    with codecs.open(path_to_save, "w", encoding="utf-8",
                      errors="xmlcharrefreplace") as output_file:
-        output_file.write(result_html)
+        output_file.write(html_text)
+    return True
 
 
 if __name__ == '__main__':
@@ -41,4 +50,8 @@ if __name__ == '__main__':
     with open('template.html', 'r') as template_file:
         template = template_file.read()
     for article in articles:
-        convert_markdown_to_html(article['source'], article['title'], template)
+        html_article = convert_markdown_to_html(article['source'],
+                                                article['title'],
+                                                template)
+        path_to_save_html = form_path_to_save_html(article['source'])
+        save_html_file(html_article, path_to_save_html)

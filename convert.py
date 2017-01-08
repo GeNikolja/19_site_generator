@@ -16,7 +16,7 @@ def get_config():
     return config
 
 
-def convert_markdown_to_htnl(markdown_path, article_title, template):
+def convert_markdown_to_html(markdown_path, article_title, template):
     input_file = codecs.open('./articles/' + markdown_path,
                              mode="r",
                              encoding="utf-8")
@@ -40,4 +40,4 @@ if __name__ == '__main__':
     with open('template.html', 'r') as template_file:
         template = template_file.read()
     for article in articles:
-        convert_markdown_to_htnl(article['source'], article['title'], template)
+        convert_markdown_to_html(article['source'], article['title'], template)

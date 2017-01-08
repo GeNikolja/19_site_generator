@@ -24,11 +24,12 @@ def convert_markdown_to_html(markdown_path, article_title, template):
     html = markdown.markdown(markdown_text)
     result_html = jinja2.Template(template).render(content=html,
                                                    title=article_title)
-    path_to_save = './html/' + os.path.dirname(markdown_path) + '/'
+    path_to_save = os.path.join('./html', os.path.dirname(markdown_path))
     test_path_and_make_dir(path_to_save)
-    new_filename = os.path.basename(markdown_path).split('.')[0] + '.html'
-    with codecs.open(path_to_save + new_filename,
-                     "w", encoding="utf-8",
+    extension = '.html'
+    new_filename = os.path.splitext(os.path.basename(markdown_path))[0] + extension
+    final_path = os.path.join(path_to_save, new_filename)
+    with codecs.open(final_path, "w", encoding="utf-8",
                      errors="xmlcharrefreplace") as output_file:
         output_file.write(result_html)
 
